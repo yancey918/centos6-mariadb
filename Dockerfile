@@ -28,11 +28,9 @@ RUN chmod 755 /opt/docker/bash/init-bashrc.sh && echo "/opt/docker/bash/init-bas
     echo 'export PATH="/root/.composer/vendor/bin:$PATH"' >> /root/.bashrc
 
 
-RUN cp -p /opt/docker/bash/MariaDB.repo /etc/yum.repos.d/MariaDB.repo
-
 # Install Mariadb and Start
-RUN yum install MariaDB-server MariaDB-client -y
-
+RUN cp -p /opt/docker/bash/MariaDB.repo /etc/yum.repos.d/MariaDB.repo && \
+    yum install MariaDB-server MariaDB-client -y
 
 
 # Setting DateTime Zone
