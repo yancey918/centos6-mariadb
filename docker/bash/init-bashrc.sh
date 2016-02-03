@@ -14,7 +14,7 @@ fi
 
 
 # Check Service to start
-for SERVICE in mariadb
+for SERVICE in mysql
 do
   if ps ax | grep -v grep | grep $SERVICE > /dev/null
   then
