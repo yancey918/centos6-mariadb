@@ -35,11 +35,11 @@ RUN mv /etc/my.cnf /etc/my.bak && \
 
 
 # Copy files for setting
-ADD . /opt/
+ADD ./docker /opt/
 
 
 # Create Base Enter Cont Command
-RUN chmod 755 /opt/docker/bash/init-bashrc.sh && echo "/opt/docker/bash/init-bashrc.sh" >> /root/.bashrc && \
+RUN chmod 755 /opt/bash/init-bashrc.sh && echo "/opt/bash/init-bashrc.sh" >> /root/.bashrc && \
     echo 'export PATH="/root/.composer/vendor/bin:$PATH"' >> /root/.bashrc
 
 

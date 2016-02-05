@@ -1,20 +1,17 @@
 #!/bin/bash
 
-MARIADB_PATH="/home/config/"
-MARIADB_DATA="/home/mysql/"
-
-# Create base dir
-mkdir -p $MARIADB_PATH
-
+MARIADB_PATH="/home/mysql"
 
 # Copy default config files
-if [ "`ls -A $CONF_PATH`" = "" ]; then
-  \cp -fr /opt/docker/config/* $CONF_PATH
+if [ "`ls -A /opt/config`" != "" ]; then
+  \cp -frp /opt/config/mysql/my.cnf /etc/my.cnf
+  rm -rf /opt/config
 fi
 
-if [ "`ls -A $MARIADB_DATA`" = "" ]; then
-  \cp -r /var/lib/mysql/ ${MARIADB_DATA}
+if [ "`ls -A ${MARIADB_PATH}`" = "" ]; then
+  \cp -rp /var/lib/mysql/* ${MARIADB_PATH}/
 fi
+
 
 # Check Service to start
 for SERVICE in mysql
@@ -27,3 +24,4 @@ do
      service $SERVICE start;
   fi
 done
+
