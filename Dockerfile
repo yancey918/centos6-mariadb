@@ -60,7 +60,7 @@ EXPOSE 3306 22
 
 
 # Volume for web server install
-VOLUME ["/home/mysql"]
+VOLUME ["/home/mysql","/home/tmp"]
 
 
 # Start run shell
