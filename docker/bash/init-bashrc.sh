@@ -10,7 +10,7 @@ MV="$(which mv)"
 # Check Service to start
 function service_start()
 {
-  for SERVICE in mysql
+  for SERVICE in mysql sshd
   do
     if ps ax | grep -v grep | grep $SERVICE > /dev/null
     then
