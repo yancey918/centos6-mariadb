@@ -23,8 +23,10 @@ function service_start()
 }
 
 
-if [ "`ls -A ${MARIADB_PATH}`" = "" ]; then
-  \cp -rp /var/lib/mysql/* ${MARIADB_PATH}/
+# Check & Copy DB Files
+if [ "`ls -A $MARIADB_PATH`" = "" ]; then
+  echo "$DIRECTORY not database files, run copy default database files to here"
+  \cp -rp /var/lib/mysql/* $MARIADB_PATH/
 fi
 
 
