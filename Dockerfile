@@ -3,7 +3,6 @@ MAINTAINER Imagine Chiu<imagine10255@gmail.com>
 
 
 ENV SSH_ROOT_PASSWORD=P@ssw0rd
-ENV MYSQL_ROOT_PASSWORD=P@ssw0rd
 
 # Install base tool
 RUN yum -y install vim wget tar
@@ -29,17 +28,15 @@ RUN echo -e "[mariadb]" >> /etc/yum.repos.d/MariaDB.repo && \
     echo -e "gpgcheck=1" >> /etc/yum.repos.d/MariaDB.repo
 
 RUN yum -y install MariaDB-Galera-server MariaDB-client galera
-RUN mv /etc/my.cnf /etc/my.bak && \
-    cp /usr/share/mysql/my-medium.cnf /etc/my.cnf && \
-    cp /usr/share/mysql/wsrep.cnf /etc/my.cnf.d/ && \
-    $(which service) mysql start && \
-    $(which mysqladmin) -uroot password ${MYSQL_ROOT_PASSWORD} && \
-    $(which mysql) -uroot -p${MYSQL_ROOT_PASSWORD} -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;flush privileges;"
-
-
 
 # Copy files for setting
 ADD ./docker /opt/
+
+
+RUN $(which cp) /usr/share/mysql/my-medium.cnf /etc/my.cnf.bak && \
+    $(which cp) /usr/share/mysql/wsrep.cnf /etc/my.cnf.d/ && \
+    $(which cp) -frp /opt/config/mysql/my.cnf /etc/my.cnf && \
+    $(which cp) -frp /var/lib/mysql /home/mysql
 
 
 # Create Base Enter Cont Command

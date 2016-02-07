@@ -1,11 +1,13 @@
 #!/bin/bash
 
-MARIADB_PATH="/home/mysql"
+MYSQL_DATA_PATH="/home/mysql"
+MYSQL_ROOT_PASSWORD=P@ssw0rd
 
 MKDIR="$(which mkdir)"
 RM="$(which rm)"
 MV="$(which mv)"
-
+SH="$(which sh)"
+CP="$(which cp)"
 
 # Check Service to start
 function service_start()
@@ -22,16 +24,13 @@ function service_start()
   done
 }
 
-
 # Check & Copy DB Files
-if [ "`ls -A $MARIADB_PATH`" = "" ]; then
+if [ "`ls -A $MYSQL_DATA_PATH`" = "" ]; then
   echo "$DIRECTORY not database files, run copy default database files to here"
-  \cp -rp /var/lib/mysql/* $MARIADB_PATH/
+  $CP -rp /var/lib/mysql/* $MYSQL_DATA_PATH/
+  $(which service) mysql start
+  $(which mysqladmin) -uroot password ${MYSQL_ROOT_PASSWORD}
+  $(which mysql) -uroot -p${MYSQL_ROOT_PASSWORD} -e"GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' WITH GRANT OPTION;flush privileges;"
 fi
 
-
-# Copy default config files
-test -d "/opt/config" && \
-\cp -frp /opt/config/mysql/my.cnf /etc/my.cnf && \
-service_start && \
-rm -rf /opt/config
+service_start
