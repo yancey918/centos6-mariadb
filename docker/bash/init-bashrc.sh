@@ -14,15 +14,13 @@ function service_start()
 {
   for SERVICE in mysql sshd
   do
-    if ps ax | grep -v grep | grep $SERVICE > /dev/null
+    if ! (ps ax | grep -v grep | grep $SERVICE > /dev/null)
     then
-       #echo "service $SERVICE runing";
-       break;
-    else
        service $SERVICE start;
     fi
   done
 }
+
 
 # Check & Copy DB Files
 if [ "`ls -A $MYSQL_DATA_PATH`" = "" ]; then
