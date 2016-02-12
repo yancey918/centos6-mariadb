@@ -5,21 +5,13 @@ MAINTAINER Imagine Chiu<imagine10255@gmail.com>
 ENV SSH_ROOT_PASSWORD=P@ssw0rd
 
 # Install base tool
-RUN yum -y install vim wget tar
-
-
-# Install develop tool
-RUN yum -y groupinstall development
+RUN yum -y install vim tar
 
 
 # Install SSH Service
 RUN yum install -y openssh-server passwd
 RUN sed -ri 's/#UsePAM no/UsePAM no/g' /etc/ssh/sshd_config && \
     echo "${SSH_ROOT_PASSWORD}" | passwd "root" --stdin
-
-
-# Install Mariadb and Start(http://blog.xuite.net/hankohya34/blog/212032955-MariaDB+Cluster+%E8%A8%AD%E5%AE%9A)
-# /usr/bin/mysql_secure_installation
 
 RUN echo -e "[mariadb]" >> /etc/yum.repos.d/MariaDB.repo && \
     echo -e "name = MariaDB" >> /etc/yum.repos.d/MariaDB.repo && \
