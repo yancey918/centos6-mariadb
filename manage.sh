@@ -1,7 +1,13 @@
 #!/bin/bash
-# Program:
 
 IMAGES_NAME=imagine10255/centos6-mariadb:latest
+
+display_container()
+{
+    docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
+    echo ""
+}
+
 clear
 
 until [ "$NUM" == "q" ] #輸入文字q 則離開
@@ -11,14 +17,15 @@ do
 Dockerfile Tools
 
 [container manage]   
-cc) create-container
-ec) enter-container
-ic) install-container
+cc) create  container
+ec) enter   container
+ic) install container
+ps) display container
 
 [images manage]
-bi) build-images
-pi) push-images
-di) delete-images
+bi) build  images
+pi) push   images
+di) delete images
 "
     read -p "Enter your choice: " NUM
     case $NUM in
@@ -27,8 +34,7 @@ di) delete-images
         exit;
     ;;
     ec)
-        docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
-        echo ""
+        display_container
         read -p "Enter Container ID or Name: " CONTAINERID
         case $CONTAINERID in
         *)
@@ -36,8 +42,7 @@ di) delete-images
         ;;esac
     ;;
     ic)
-        docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
-        echo ""
+        display_container
         read -p "Rename Container: " NEW_CONTAINER_NAME
         case $NEW_CONTAINER_NAME in
         *)
@@ -59,6 +64,9 @@ di) delete-images
              docker exec -it "$NEW_CONTAINER_NAME" bash
  
         ;;esac
+    ;;
+    ps)
+        display_container
     ;;
     bi)
         docker build -t ${IMAGES_NAME} .
