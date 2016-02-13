@@ -1,9 +1,13 @@
 #!/bin/bash
 
-IMAGES_NAME=imagine10255/centos6-mariadb:latest
+AUTHOR=imagine10255
+IMAGE_NAME=centos6-mariadb
+VERSION=latest
+FULL_NAME=$AUTHOR/$IMAGE_NAME:$VERSION
 
 display_container()
 {
+    clear
     docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
     echo ""
 }
@@ -30,8 +34,8 @@ di) delete images
     read -p "Enter your choice: " NUM
     case $NUM in
     cc)
-        docker run -it ${IMAGES_NAME} bash
-        exit;
+        clear
+        docker run -it ${FULL_NAME} bash
     ;;
     ec)
         display_container
@@ -43,41 +47,39 @@ di) delete images
     ;;
     ic)
         display_container
-        read -p "Rename Container: " NEW_CONTAINER_NAME
+        read -p "Rename Container or Enter empty(default: centos6-mariadb): " NEW_CONTAINER_NAME
         case $NEW_CONTAINER_NAME in
         *)
             if [ "$NEW_CONTAINER_NAME" == "" ]; then
-               echo ">> please enter container new-name";
-               exit;
+               NEW_CONTAINER_NAME=$IMAGE_NAME
             fi
             
              # create docker-container
              docker run -idt \
              --name "$NEW_CONTAINER_NAME" \
              -p 3306:3306 \
-             -p 22:3322 \
+             -p 3322:22 \
              -v /home/tmp:/home/tmp \
              -v /home/mysql:/home/mysql \
-             ${IMAGES_NAME}
+             ${FULL_NAME}
 
              # enter docker-container
              docker exec -it "$NEW_CONTAINER_NAME" bash
- 
         ;;esac
     ;;
-    ps)
+    ps) 
         display_container
     ;;
     bi)
-        docker build -t ${IMAGES_NAME} .
+        clear
+        docker build -t ${FULL_NAME} .
     ;;
     pi)
-        docker push ${IMAGES_NAME}
-        exit;
+        docker push ${FULL_NAME}
     ;;
     di)
+        clear
         docker rmi `docker images | grep "^<none>" | awk '{print $3}'`
-        exit;
     ;;
     q)
         exit;
