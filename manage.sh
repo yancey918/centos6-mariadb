@@ -5,12 +5,6 @@ IMAGE_NAME=centos6-mariadb
 VERSION=latest
 FULL_NAME=$AUTHOR/$IMAGE_NAME:$VERSION
 
-display_container()
-{
-    clear
-    docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
-    echo ""
-}
 
 create_container()
 {
@@ -21,6 +15,14 @@ create_container()
     -v /home/tmp:/home/tmp \
     -v /home/mysql:/home/mysql \
     $1
+}
+
+
+display_container()
+{
+    clear
+    docker ps --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}\t{{.Ports}}"
+    echo ""
 }
 
 
