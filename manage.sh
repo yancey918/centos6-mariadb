@@ -12,6 +12,18 @@ display_container()
     echo ""
 }
 
+create_container()
+{
+    docker run -idt \
+    --name "$2" \
+    -p 3306:3306 \
+    -p 3322:22 \
+    -v /home/tmp:/home/tmp \
+    -v /home/mysql:/home/mysql \
+    $1
+}
+
+
 clear
 
 until [ "$NUM" == "q" ] #輸入文字q 則離開
@@ -35,7 +47,7 @@ di) delete images
     case $NUM in
     cc)
         clear
-        docker run -it ${FULL_NAME} bash
+        docker run -idt ${FULL_NAME} bash
     ;;
     ec)
         display_container
@@ -54,17 +66,10 @@ di) delete images
                NEW_CONTAINER_NAME=$IMAGE_NAME
             fi
             
-             # create docker-container
-             docker run -idt \
-             --name "$NEW_CONTAINER_NAME" \
-             -p 3306:3306 \
-             -p 3322:22 \
-             -v /home/tmp:/home/tmp \
-             -v /home/mysql:/home/mysql \
-             ${FULL_NAME}
+            create_container ${FULL_NAME} ${NEW_CONTAINER_NAME}
 
-             # enter docker-container
-             docker exec -it "$NEW_CONTAINER_NAME" bash
+            # enter docker-container
+            docker exec -it "$NEW_CONTAINER_NAME" bash
         ;;esac
     ;;
     ps) 
