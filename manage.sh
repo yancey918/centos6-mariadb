@@ -38,6 +38,7 @@ Dockerfile Tools
 cc) create  container
 ec) enter   container
 ic) install container
+dc) delete  container
 ps) display container
 
 [images manage]
@@ -72,6 +73,15 @@ di) delete images
 
             # enter docker-container
             docker exec -it "$NEW_CONTAINER_NAME" bash
+        ;;esac
+    ;;
+    dc)
+        display_container
+        read -p "Enter Container ID or Name: " CONTAINERID
+        case $CONTAINERID in
+        *)
+            docker stop ${CONTAINERID}
+            docker rm ${CONTAINERID}
         ;;esac
     ;;
     ps) 
