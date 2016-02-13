@@ -26,7 +26,7 @@ create_container()
 
 clear
 
-until [ "$NUM" == "q" ] #輸入文字q 則離開
+until [ "$NUM" == "q" ]
 do
     # View
     echo -e "
@@ -59,7 +59,7 @@ di) delete images
     ;;
     ic)
         display_container
-        read -p "Rename Container or Enter empty(default: centos6-mariadb): " NEW_CONTAINER_NAME
+        read -p "Rename Container or Enter empty(default: $IMAGE_NAME): " NEW_CONTAINER_NAME
         case $NEW_CONTAINER_NAME in
         *)
             if [ "$NEW_CONTAINER_NAME" == "" ]; then
